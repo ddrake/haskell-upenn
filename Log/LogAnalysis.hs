@@ -50,3 +50,13 @@ build msgs = foldl (\a x -> insert x a) Leaf msgs
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
 inOrder (Node left msg right) = (inOrder left) ++ msg:(inOrder right)
+
+isSerious :: LogMessage -> Bool
+isSerious (LogMessage (Error severity) _ _) = severity >= 50
+isSerious _                                 = False
+
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong msgs = 
+  let seriousMsgs = filter isSerious msgs
+      seriousTree = build seriousMsgs
+  in map (\(LogMessage _ _ msg) -> msg) . inOrder $ seriousTree
