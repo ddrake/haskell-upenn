@@ -16,7 +16,6 @@ parseMessage msg =
               of  (Nothing, _) -> Unknown msg
                   (Just timeStamp, rest) -> LogMessage messageType timeStamp $ unwords rest
 
-
 isInt :: String -> Bool
 isInt = all (`elem` ['0'..'9'])
 
