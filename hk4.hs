@@ -1,4 +1,5 @@
 import Data.List
+import qualified Data.Set as S
 
 fun1 :: [Integer] -> Integer
 fun1 [] = 1
@@ -55,3 +56,11 @@ map' f = foldr (\x a -> f x:a) []
 
 myFoldl :: (a -> b -> a) -> a -> [b] -> a
 myFoldl f a xs =  foldr (flip f) a (reverse xs)
+
+-- wow! like 8.26 million primes in 20 seconds!
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n = 
+  let k = floor $ sqrt ((fromIntegral $ 1+2*n) - 1) / 2
+      toRemove = S.fromList [i+j+2*i*j | j <- [1..k], i <- [1..j]]
+      remaining = (S.fromList [1..n]) S.\\ toRemove
+  in map (\x -> x*2 + 1) . S.toList $ remaining
